@@ -1,26 +1,29 @@
 ﻿@page "/"
-@using Syncfusion.Blazor.DropDowns
-
-<SfDropDownList TValue="string" TItem="Games" Placeholder="Select a game" DataSource="@LocalData">
-    <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
-</SfDropDownList>
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+<SfButton Content="Add tab" OnClick="AddTab" />
+<SfTab @ref="sfTab" LoadOn="ContentLoad.Init" ShowCloseButton="true" AllowDragAndDrop="true" Height="100%" @bind-SelectedItem="currentTabIndex">
+    <TabAnimationSettings>
+        <TabAnimationNext Effect="AnimationEffect.None" />
+        <TabAnimationPrevious Effect="AnimationEffect.None" />
+    </TabAnimationSettings>
+</SfTab>
 
 @code {
-    public class Games
+    int currentTabIndex = 0;
+    SfTab? sfTab;
+
+    async Task AddTab()
     {
-        public string ID { get; set; }
-        public string Text { get; set; }
+        var tab = new TabItem()
+            {
+                Content = "Hello",
+                Header = new TabHeader() { Text = $"Tab {sfTab.Items.Count + 1}", IconPosition = "left" },
+            };
+
+        await sfTab.AddTab(new List<TabItem> { tab }, sfTab.Items.Count);
+        // await Task.Delay(500); // I do not want a hardcoded delay
+        await sfTab.SelectAsync(sfTab.Items.Count - 1);
     }
-    List<Games> LocalData = new List<Games> {
-    new Games() { ID= "Game1", Text= "American Football" },
-    new Games() { ID= "Game2", Text= "Badminton" },
-    new Games() { ID= "Game3", Text= "Basketball" },
-    new Games() { ID= "Game4", Text= "Cricket" },
-    new Games() { ID= "Game5", Text= "Football" },
-    new Games() { ID= "Game6", Text= "Golf" },
-    new Games() { ID= "Game7", Text= "Hockey" },
-    new Games() { ID= "Game8", Text= "Rugby"},
-    new Games() { ID= "Game9", Text= "Snooker" },
-    new Games() { ID= "Game10", Text= "Tennis"},
-  };
 }
