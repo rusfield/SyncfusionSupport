@@ -2,18 +2,14 @@
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
+
 <SfButton Content="Add tab" OnClick="AddTab" />
-<SfTab @ref="sfTab" LoadOn="ContentLoad.Init" ShowCloseButton="true" AllowDragAndDrop="true" Height="100%" @bind-SelectedItem="currentTabIndex">
-    <TabAnimationSettings>
-        <TabAnimationNext Effect="AnimationEffect.None" />
-        <TabAnimationPrevious Effect="AnimationEffect.None" />
-    </TabAnimationSettings>
+<SfTab @ref="sfTab" LoadOn="ContentLoad.Init" ShowCloseButton="true" AllowDragAndDrop="true"
+       Height="100%">
 </SfTab>
 
 @code {
-    int currentTabIndex = 0;
     SfTab? sfTab;
-
     async Task AddTab()
     {
         var tab = new TabItem()
@@ -23,7 +19,7 @@
             };
 
         await sfTab.AddTab(new List<TabItem> { tab }, sfTab.Items.Count);
-        // await Task.Delay(500); // I do not want a hardcoded delay
-        await sfTab.SelectAsync(sfTab.Items.Count - 1);
+        sfTab.SelectedItem = sfTab.Items.Count - 1;
+        this.StateHasChanged();
     }
 }
